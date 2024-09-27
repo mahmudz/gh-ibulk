@@ -1,6 +1,6 @@
 module github.com/mahmudz/gh-ibulk
 
-go 1.23
+go 1.23.1
 
 require github.com/cli/go-gh/v2 v2.10.0
 
