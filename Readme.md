@@ -4,6 +4,8 @@
 
 <a href="https://github.com/mahmudz/gh-ibulk/releases"><img src="https://img.shields.io/github/release/mahmudz/gh-ibulk.svg" alt="Latest Release"></a>
 
+![Github Bulk Delete Demo](https://raw.githubusercontent.com/mahmudz/gh-ibulk/refs/heads/main/demo.gif "Github Bulk Delete Demo")
+
 ## 📦 Installing from Github CLI
 
 1. Install the `gh` CLI - see the [installation](https://github.com/cli/cli#installation)
