@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -18,8 +20,10 @@ import (
 )
 
 var (
-	auth                struct{ Login string }
-	confirmedRandomText string
+	operation            string
+	auth                 struct{ Login string }
+	selectedRepositories []string
+	confirmedRandomText  string
 )
 
 func main() {
@@ -40,7 +44,7 @@ func main() {
 	}
 
 	for {
-		operation := selectOperation()
+		operation = selectOperation()
 
 		if operation == "exit" {
 			os.Exit(0)
@@ -52,7 +56,7 @@ func main() {
 			continue
 		}
 
-		selectedRepositories := selectRepositories(repoOptions)
+		selectedRepositories = selectRepositories(repoOptions)
 
 		if len(selectedRepositories) == 0 {
 			fmt.Println("No Repositories Found.")
@@ -74,6 +78,8 @@ func main() {
 				Action(func() {
 					if operation == "delete" {
 						deleteRepos(client, selectedRepositories)
+					} else if operation == "archive" {
+						archiveRepos(client, selectedRepositories)
 					}
 				}).
 				Run()
@@ -137,6 +143,7 @@ func selectOperation() string {
 				Title("Choose operation").
 				Options(
 					huh.NewOption("Bulk: Delete repositories", "delete"),
+					huh.NewOption("Bulk: Archive repositories", "archive"),
 					huh.NewOption("Exit", "exit"),
 				).
 				Value(&value),
@@ -208,10 +215,20 @@ func confirmText() string {
 func confirmAction() bool {
 	var isConfirmed bool
 
+	repoLabel := "repo"
+	if len(selectedRepositories) > 1 {
+		repoLabel = "repos"
+	}
+
+	actionLabels := map[string]interface{}{
+		"delete":  "deleted",
+		"archive": "archived",
+	}
+
 	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewConfirm().
-				Title("❌ Do you really want to delete the repositories? ❌").
+				Title(fmt.Sprintf("❌ %d %s will be %s. Want to proceed? ❌", len(selectedRepositories), repoLabel, actionLabels[operation])).
 				Affirmative("Yes!").
 				Negative("No.").
 				Value(&isConfirmed),
@@ -288,5 +305,28 @@ func deleteRepos(client *api.RESTClient, repos []string) {
 		}
 
 		fmt.Println("Deleted " + repo)
+	}
+}
+
+func archiveRepos(client *api.RESTClient, repos []string) {
+	body := map[string]interface{}{
+		"archived": true,
+	}
+	jsonBody, err := json.Marshal(body)
+
+	if err != nil {
+		log.Fatalf("impossible to build request: %s", err)
+	}
+
+	for _, repo := range repos {
+		var resp interface{}
+		err := client.Patch("repos/"+auth.Login+"/"+repo, bytes.NewReader(jsonBody), &resp)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		fmt.Println("Archived " + repo)
 	}
 }
