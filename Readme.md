@@ -1,10 +1,14 @@
-# gh-ibulk
+# 🚀 gh-ibulk
 
 ✨ An interactive GitHub (gh) CLI extension to delete multiple repos at once.
 
 <a href="https://github.com/mahmudz/gh-ibulk/releases"><img src="https://img.shields.io/github/release/mahmudz/gh-ibulk.svg" alt="Latest Release"></a>
 
 ![Github Bulk Delete Demo](https://raw.githubusercontent.com/mahmudz/gh-ibulk/refs/heads/main/demo.gif "Github Bulk Delete Demo")
+
+## 🧩 Features
+- 🗑️ Delete repos
+- 🗃️ Archive repos
 
 ## 📦 Installing from Github CLI
 
@@ -22,7 +26,8 @@
 
 > If you want to install this extension **manually**, follow these steps:
 
-1. Clone the repo
+1. You must have go `go>=1.23.1` installed on your machine
+2. Clone the repo
 
    ```shell
    # git
@@ -34,19 +39,19 @@
    gh repo clone mahmudz/gh-ibulk
    ```
 
-2. Cd into it
+3. Cd into it
 
    ```bash
    cd gh-ibulk
    ```
 
-3. Build it
+4. Build it
 
    ```bash
    go build
    ```
 
-4. Install it locally
+5. Install it locally
    ```bash
    gh extension install .
    ```
@@ -58,3 +63,12 @@ Run & select your operation
 ```sh
 gh ibulk
 ```
+
+## 💬 How to offer feedback or make a feature request
+If you would like to offer feedback or make a feature request, please create a new discussion [here](https://github.com/mahmudz/gh-ibulk/discussions/new/choose).
+
+## 🤝🏼 Contribution
+You're welcome to contribute.
+
+## 👨🏻‍💻 Author
+Mahmudul Hasan [hello@mahmudz.dev](hello@mahmudz.dev)
