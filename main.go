@@ -24,6 +24,14 @@ var (
 	auth                 struct{ Login string }
 	selectedRepositories []string
 	confirmedRandomText  string
+	actionLabels         = map[string]interface{}{
+		"delete":  "deleted",
+		"archive": "archived",
+	}
+	inProgressActionLabels = map[string]interface{}{
+		"delete":  "Deleteing",
+		"archive": "Archiving",
+	}
 )
 
 func main() {
@@ -74,7 +82,7 @@ func main() {
 
 		if isConfirmed {
 			err = spinner.New().
-				Title("Deleting repositories...").
+				Title(fmt.Sprintf("%s repositories...", inProgressActionLabels[operation])).
 				Action(func() {
 					if operation == "delete" {
 						deleteRepos(client, selectedRepositories)
@@ -218,11 +226,6 @@ func confirmAction() bool {
 	repoLabel := "repo"
 	if len(selectedRepositories) > 1 {
 		repoLabel = "repos"
-	}
-
-	actionLabels := map[string]interface{}{
-		"delete":  "deleted",
-		"archive": "archived",
 	}
 
 	form := huh.NewForm(
