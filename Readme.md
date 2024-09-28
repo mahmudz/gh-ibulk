@@ -37,7 +37,7 @@
 2. Cd into it
 
    ```bash
-   cd gh-dash
+   cd gh-ibulk
    ```
 
 3. Build it
